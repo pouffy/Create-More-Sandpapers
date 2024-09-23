@@ -2,6 +2,7 @@ package com.drmangotea.createsandpapers;
 
 import com.simibubi.create.content.equipment.sandPaper.SandPaperItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import net.minecraft.world.item.Item;
 
 public enum ModSandpapers {
     SOUL,
@@ -26,18 +27,26 @@ public enum ModSandpapers {
     VENUS
     ;
     
-    //public final SandPaperEntry SAND_PAPER;
+    public final SandPaperEntry SAND_PAPER;
     
     ModSandpapers() {
-        CSRegistrate reg = (CSRegistrate) CreateSandpapers.registrate().creativeModeTab(() -> CreateSandpapers.itemGroup);
-        //SAND_PAPER = reg.sandPaper(getName());
+        CSRegistrate reg = CreateSandpapers.REGISTRATE;
+        SAND_PAPER = reg.sandPaper(name().toLowerCase());
+    }
+    
+    public SandPaperEntry getSandPaper() {
+        return SAND_PAPER;
     }
     
     public String getName() {
         return this.name().toLowerCase();
     }
     
-    //public SandPaperItem getSandPaperItem() {
-    //    return SAND_PAPER.getItem().get();
-    //}
+    public ItemEntry<SandPaperItem> getItem() {
+        return SAND_PAPER.getItem();
+    }
+    
+    public SandPaperItem getSandPaperItem() {
+        return SAND_PAPER.getItem().get();
+    }
 }

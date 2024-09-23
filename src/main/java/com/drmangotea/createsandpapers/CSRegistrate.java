@@ -3,6 +3,7 @@ package com.drmangotea.createsandpapers;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.equipment.sandPaper.SandPaperItem;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -21,31 +22,6 @@ public class CSRegistrate extends CreateRegistrate {
         super(CreateSandpapers.ID);
     }
     
-    public static void printSandpapers() {
-        for (String sandpaper : getSandpaperLang()) {
-            CreateSandpapers.LOGGER.info("Created '{} sand paper'", sandpaper);
-        }
-    }
-    
-    public static List<String> getSandpaperLang() {
-        return sandpaperLang;
-    }
-    
-    public static String autoLang(String id) {
-        StringBuilder builder = new StringBuilder();
-        boolean b = true;
-        for (char c: id.toCharArray()) {
-            if(c == '_') {
-                builder.append(' ');
-                b = true;
-            } else {
-                builder.append(b ? String.valueOf(c).toUpperCase() : c);
-                b = false;
-            }
-        }
-        return builder.toString();
-    }
-    
     public static CSRegistrate create() {
         return new CSRegistrate();
     }
@@ -53,24 +29,16 @@ public class CSRegistrate extends CreateRegistrate {
     public SandPaperEntry sandPaper(String name) {
         return new SandPaperEntry(this, name);
     }
-    public void addType(String name) {
-        sandpaperLang.add(name);
-    }
     
     public ItemEntry<SandPaperItem> sandPaperItem(String name) {
         sandpaperLang.add(name);
-        return this.item(name + "_sand_paper", SandPaperItem::new)
-                .tag(AllTags.AllItemTags.SANDPAPER.tag)
-                .tab(() -> CreateSandpapers.itemGroup)
-                .lang(autoLang(name + "_sand_paper"))
-                .register();
+        ItemBuilder<SandPaperItem, ?> builder = item(name + "_sand_paper", SandPaperItem::new).tag(AllTags.AllItemTags.SANDPAPER.tag);
+        return builder.register();
     }
     
     public static Item getSandpaper(String name) {
-        return CreateSandpapers.registrate().get(name+"_sand_paper", ForgeRegistries.ITEMS.getRegistryKey()).get();
+        return CreateSandpapers.REGISTRATE.get(name+"_sand_paper", ForgeRegistries.ITEMS.getRegistryKey()).get();
     }
-    
-    
     
     public static void provideSandpaperLang(BiConsumer<String, String> consumer) {
         for (String name : sandpaperLang) {

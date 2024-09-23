@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "createsandpapers:creates_blue_sandpaper"
+            "tag": "createsandpapers:creates_coral_sandpaper"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "createsandpapers:crafting/blue_sand_paper"
+        "recipe": "createsandpapers:crafting/coral_sand_paper"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,8 @@
   ],
   "rewards": {
     "recipes": [
-      "createsandpapers:crafting/blue_sand_paper"
+      "createsandpapers:crafting/coral_sand_paper"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

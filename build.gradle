@@ -20,7 +20,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.1a-1.19.2'
+version = '1.1a-1.20.1'
 group = 'com.drmangotea.createsandpapers' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createsandpapers'
 
@@ -29,7 +29,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: 'official', version: '1.19.2'
+    mappings channel: 'official', version: '1.20.1'
 
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
 
@@ -121,21 +121,23 @@ repositories {
 dependencies {
 
 
-    minecraft 'net.minecraftforge:forge:1.19.2-43.2.3'
+    minecraft 'net.minecraftforge:forge:1.20.1-47.1.43'
 
     implementation fg.deobf("com.simibubi.create:create-${create_minecraft_version}:${create_version}:all") { transitive = false }
     implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
-    implementation fg.deobf("curse.maven:jei-238222:4405346")
+    compileOnly fg.deobf("mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version")
+    compileOnly fg.deobf("mezz.jei:jei-$jei_minecraft_version-forge-api:$jei_version")
+    implementation fg.deobf("mezz.jei:jei-$jei_minecraft_version-forge:$jei_version")
 
 
   //  implementation fg.deobf("curse.maven:oh-the-biomes-youll-go-247560:3920704") // oh the biomes youl'll go
-    implementation fg.deobf("curse.maven:bop-220318:4128419") // biomes o plenty
+    implementation fg.deobf("curse.maven:bop-220318:4764804") // biomes o plenty
 
 //    runtimeOnly fg.deobf("curse.maven:corgilib-693313:4416616") // corgilib
-    runtimeOnly fg.deobf("curse.maven:terrablender-563928:4205732") // terrablender
-    runtimeOnly fg.deobf("curse.maven:geckolib-388172:4407241") // geckolib
+    runtimeOnly fg.deobf("curse.maven:terrablender-563928:5378180") // terrablender
+    runtimeOnly fg.deobf("curse.maven:geckolib-388172:5460309") // geckolib
 
     annotationProcessor "org.spongepowered:mixin:0.8.3:processor"
     testAnnotationProcessor "org.spongepowered:mixin:0.8.3:processor"

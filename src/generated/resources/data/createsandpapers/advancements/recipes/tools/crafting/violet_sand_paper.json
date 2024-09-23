@@ -28,5 +28,6 @@
     "recipes": [
       "createsandpapers:crafting/violet_sand_paper"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

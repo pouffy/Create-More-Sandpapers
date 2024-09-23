@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "createsandpapers:creates_soul_sandpaper"
+            "tag": "createsandpapers:creates_orange_sandpaper"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "createsandpapers:crafting/soul_sand_paper"
+        "recipe": "createsandpapers:crafting/orange_sand_paper"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,8 @@
   ],
   "rewards": {
     "recipes": [
-      "createsandpapers:crafting/soul_sand_paper"
+      "createsandpapers:crafting/orange_sand_paper"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
