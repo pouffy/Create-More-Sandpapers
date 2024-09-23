@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "#forge:sand/blue",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:blue_sand",
+      "required": false
+    }
+  ]
+}

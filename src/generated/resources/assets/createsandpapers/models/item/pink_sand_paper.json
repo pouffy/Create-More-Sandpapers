@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "createsandpapers:item/pink_sand_paper"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "values": [
+    {
+      "id": "#forge:sand/white",
+      "required": false
+    },
+    {
+      "id": "tfc:sand/white",
+      "required": false
+    },
+    {
+      "id": "biomesoplenty:white_sand",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:white_sand",
+      "required": false
+    }
+  ]
+}

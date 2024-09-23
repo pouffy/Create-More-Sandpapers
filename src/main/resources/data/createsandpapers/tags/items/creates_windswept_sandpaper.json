@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "byg:windswept_sand",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:windswept_sand",
+      "required": false
+    }
+  ]
+}

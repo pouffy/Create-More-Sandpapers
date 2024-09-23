@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "tag": "createsandpapers:creates_venus_sandpaper"
+    }
+  ],
+  "result": {
+    "item": "createsandpapers:venus_sand_paper"
+  }
+}

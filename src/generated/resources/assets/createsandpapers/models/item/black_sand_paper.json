@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "createsandpapers:item/black_sand_paper"
+  }
+}

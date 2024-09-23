@@ -1,0 +1,20 @@
+{
+  "values": [
+    {
+      "id": "#forge:sand/black",
+      "required": false
+    },
+    {
+      "id": "tfc:sand/black",
+      "required": false
+    },
+    {
+      "id": "biomesoplenty:black_sand",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:black_sand",
+      "required": false
+    }
+  ]
+}

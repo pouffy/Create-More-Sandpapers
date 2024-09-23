@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "tag": "createsandpapers:creates_coral_sandpaper"
+    }
+  ],
+  "result": {
+    "item": "createsandpapers:coral_sand_paper"
+  }
+}

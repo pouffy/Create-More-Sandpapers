@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "tag": "createsandpapers:creates_black_sandpaper"
+    }
+  ],
+  "result": {
+    "item": "createsandpapers:black_sand_paper"
+  }
+}

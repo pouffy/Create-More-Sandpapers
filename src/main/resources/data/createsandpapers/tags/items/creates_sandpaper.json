@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "#forge:sand/colorless",
+      "required": false
+    },
+    {
+      "id": "tfc:sand/yellow",
+      "required": false
+    }
+  ]
+}

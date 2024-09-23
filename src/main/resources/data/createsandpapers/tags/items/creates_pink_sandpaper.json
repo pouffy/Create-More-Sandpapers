@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#forge:sand/pink",
+      "required": false
+    },
+    {
+      "id": "tfc:sand/pink",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:pink_sand",
+      "required": false
+    }
+  ]
+}

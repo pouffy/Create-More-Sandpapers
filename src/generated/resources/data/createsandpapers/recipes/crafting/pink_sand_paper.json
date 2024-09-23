@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "tag": "createsandpapers:creates_pink_sandpaper"
+    }
+  ],
+  "result": {
+    "item": "createsandpapers:pink_sand_paper"
+  }
+}

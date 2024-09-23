@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "tag": "createsandpapers:creates_foamy_sandpaper"
+    }
+  ],
+  "result": {
+    "item": "createsandpapers:foamy_sand_paper"
+  }
+}
