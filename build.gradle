@@ -22,6 +22,11 @@ base {
     version = mod_version + '-' + minecraft_version
 }
 
+def refmap
+mixin {
+    refmap = add sourceSets.main, 'createsandpapers.refmap.json'
+    config 'createsandpapers.mixins.json'
+}
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 
@@ -109,7 +114,10 @@ repositories {
 }
 
 dependencies {
-    modCompileOnly(jarJar("com.tterrag.registrate:Registrate:${registrate_version}"))
+    modCompileOnly("com.tterrag.registrate:Registrate:${registrate_version}")
+
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}"))
+
     modImplementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
     modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${flywheel_minecraft_version}:${flywheel_version}")
     modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
@@ -179,6 +187,16 @@ jar {
           "MixinConfigs": "createsandpapers.mixins.json",
     ])
 }
+
+final slimJar = tasks.register("slimJar", Jar) {
+    archiveClassifier = "slim"
+    from(sourceSets.main.output)
+    from(refmap)
+    manifest.attributes([
+            "MixinConfigs": "createsandpapers.mixins.json",
+    ])
+}
+obfuscation.reobfuscate(slimJar, sourceSets.main)
 
 
 publishing {
