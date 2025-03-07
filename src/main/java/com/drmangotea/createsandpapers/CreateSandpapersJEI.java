@@ -19,7 +19,7 @@ import java.util.Arrays;
 @JeiPlugin
 @SuppressWarnings("unused")
 public class CreateSandpapersJEI implements IModPlugin {
-    private final ResourceLocation spPolishing = new ResourceLocation("create", "sandpaper_polishing");
+    private final ResourceLocation spPolishing = ResourceLocation.fromNamespaceAndPath("create", "sandpaper_polishing");
 
 
     @Override
