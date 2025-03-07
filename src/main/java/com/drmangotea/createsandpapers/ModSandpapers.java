@@ -1,8 +1,8 @@
 package com.drmangotea.createsandpapers;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.simibubi.create.content.equipment.sandPaper.SandPaperItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import net.minecraft.world.item.Item;
 
 public enum ModSandpapers {
     SOUL,
@@ -26,7 +26,7 @@ public enum ModSandpapers {
     MOON,
     VENUS
     ;
-    
+
     public final SandPaperEntry SAND_PAPER;
     
     ModSandpapers() {

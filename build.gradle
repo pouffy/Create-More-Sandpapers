@@ -1,166 +1,184 @@
-buildscript {
-    repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = 'https://maven.minecraftforge.net' }
-        mavenCentral()
-        jcenter()
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
-    }
-}
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 plugins {
-    id 'eclipse'
-    id 'maven-publish'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id "idea"
+    id "eclipse"
+    id "maven-publish"
+    id "net.neoforged.moddev.legacyforge" version "2.0.74"
+    id "dev.ithundxr.silk" version "0.11.15"
+    id "net.kyori.blossom" version "2.1.0" // https://github.com/KyoriPowered/blossom
+    id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.8" // https://github.com/JetBrains/gradle-idea-ext-plugin
 }
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
+
+apply from: "./gradle/java.gradle"
+apply from: "gradle/property_loader.gradle"
+
 
 version = '1.1a-1.20.1'
 group = 'com.drmangotea.createsandpapers' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createsandpapers'
 
-// Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+base {
+    archivesName = "createsandpapers-${artifact_minecraft_version}"
+    group = 'com.drmangotea.createsandpapers'
+    version = mod_version + '-' + minecraft_version
+}
+
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
-minecraft {
-    mappings channel: 'official', version: '1.20.1'
 
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+legacyForge {
+    version = "$minecraft_version-$forge_version"
+
+    // TODO - Try turning this on later
+    validateAccessTransformers = false
+
+    if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
+        accessTransformers.from "src/main/resources/META-INF/accesstransformer.cfg"
+    }
+
+    parchment {
+        minecraftVersion = minecraft_version
+        mappingsVersion = parchment_version
+    }
+
+    mods {
+        mod_id {
+            sourceSet sourceSets.main
+        }
+    }
 
     runs {
+        configureEach {
+            systemProperty 'forge.logging.markers', ''
+            systemProperty 'forge.logging.console.level', 'info'
+            jvmArguments = ["-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition"]
+
+            systemProperty 'mixin.debug.export', 'true'
+            systemProperty 'mixin.debug.verbose', 'true'
+
+            programArgument '-mixin.config=createsandpapers.mixins.json'
+        }
+
         client {
-            workingDirectory project.file('run')
-            arg '-mixin.config=createsandpapers.mixins.json'
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'createsandpapers'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-            mods {
-                createsandpapers {
-                    source sourceSets.main
-                }
-            }
+            client()
+
+            gameDirectory = project.file('run')
         }
 
         server {
-            workingDirectory project.file('run')
-            arg '-mixin.config=createsandpapers.mixins.json'
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'createsandpapers'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-            mods {
-                createsandpapers {
-                    source sourceSets.main
-                }
-            }
+            server()
+
+            gameDirectory = project.file('run/server')
         }
 
         gameTestServer {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'createsandpapers'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-            mods {
-                createsandpapers {
-                    source sourceSets.main
-                }
-            }
+            type = "gameTestServer"
+
+            gameDirectory = project.file('run/gametest')
         }
 
         data {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            args '--mod', 'createsandpapers', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-            mods {
-                createsandpapers {
-                    source sourceSets.main
-                }
-            }
+            data()
+
+            gameDirectory = project.file('run')
+            systemProperty 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
+            systemProperty 'forge.logging.console.level', 'debug'
+            programArguments.addAll("--mod", mod_id as String, "--all", "--output", file("src/generated/resources/").getAbsolutePath(), "--existing", file("src/main/resources").getAbsolutePath())
         }
     }
 }
 
-
-// Include resources generated by data generators.
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
 repositories {
-    maven {
-        // location of the maven that hosts JEI files since January 2023
-        name = "Jared's maven"
-        url = "https://maven.blamejared.com/"
-    }
-    maven {
+    maven { url = "https://maven.createmod.net" } // Ponder, Flywheel
+    maven { url = "https://maven.tterrag.com" } // Registrate
+    maven { url = "https://maven.blamejared.com" } // JEI, Vazkii's Mods
+    maven { url = "https://www.cursemaven.com" }
+    maven { url = "https://api.modrinth.com/maven" }
 
-        name = 'tterrag maven'
-        url = 'https://maven.tterrag.com'
-    }
-    maven {
-        url = 'https://www.cursemaven.com'
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-    maven {
-        url = "https://maven.tterrag.com/"
+    mavenCentral()
+    mavenLocal()
+    flatDir {
+        dirs "libs"
     }
 }
 
 dependencies {
+    modCompileOnly(jarJar("com.tterrag.registrate:Registrate:${registrate_version}"))
+    modImplementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${flywheel_minecraft_version}:${flywheel_version}")
+    modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
+    modImplementation("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}")
+
+    modCompileOnly("mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version")
+    modCompileOnly("mezz.jei:jei-$jei_minecraft_version-forge-api:$jei_version")
+    modImplementation("mezz.jei:jei-$jei_minecraft_version-forge:$jei_version")
+
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
 
 
-    minecraft 'net.minecraftforge:forge:1.20.1-47.1.43'
+    //modImplementation("curse.maven:oh-the-biomes-youll-go-247560:3920704") // oh the biomes youl'll go
+    //modImplementation("maven.modrinth:biomes-o-plenty:$bop_ver") // biomes o plenty
 
-    implementation fg.deobf("com.simibubi.create:create-${create_minecraft_version}:${create_version}:all") { transitive = false }
-    implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
-    compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
-
-    compileOnly fg.deobf("mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version")
-    compileOnly fg.deobf("mezz.jei:jei-$jei_minecraft_version-forge-api:$jei_version")
-    implementation fg.deobf("mezz.jei:jei-$jei_minecraft_version-forge:$jei_version")
+    //modRuntimeOnly("maven.modrinth:corgilib-693313:4416616") // corgilib
+    //modRuntimeOnly("maven.modrinth:terrablender:$terrabl_ver") // terrablender
+    //modRuntimeOnly("maven.modrinth:glitchcore:$glitchcore_ver") // glitch core
 
 
-  //  implementation fg.deobf("curse.maven:oh-the-biomes-youll-go-247560:3920704") // oh the biomes youl'll go
-    implementation fg.deobf("curse.maven:bop-220318:4764804") // biomes o plenty
 
-//    runtimeOnly fg.deobf("curse.maven:corgilib-693313:4416616") // corgilib
-    runtimeOnly fg.deobf("curse.maven:terrablender-563928:5378180") // terrablender
-    runtimeOnly fg.deobf("curse.maven:geckolib-388172:5460309") // geckolib
+    implementation 'org.jetbrains:annotations:22.0.0'
 
-    annotationProcessor "org.spongepowered:mixin:0.8.3:processor"
-    testAnnotationProcessor "org.spongepowered:mixin:0.8.3:processor"
-}
-
-// Example for how to get properties into the manifest for reading at runtime.
-jar {
-    manifest {
-        attributes([
-                "Specification-Title"     : "createsandpapers",
-                "Specification-Vendor"    : "createsandpaperssareus",
-                "Specification-Version"   : "1", // We are version 1 of ourselves
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "createsandpaperssareus",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs": "createsandpapers.mixins.json"
-        ])
+    if (!Boolean.getBoolean('idea.sync.active')) {
+        annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
     }
 }
 
 
-jar.finalizedBy('reobfJar')
+
+sourceSets.main {
+    java {
+
+    }
+
+    resources {
+        srcDir 'src/generated/resources'
+        exclude '.cache/'
+    }
+
+    blossom.javaSources {
+        property("version", build_info_mod_version)
+    }
+}
+
+processResources {
+    def buildProps = project.properties.clone()
+
+    // Replaces FML's magic file.jarVersion string with the correct version at build time.
+    buildProps.put('file', [jarVersion: project.version])
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand buildProps
+    }
+}
+
+compileJava {
+    options.compilerArgs = ['-Xdiags:verbose']
+}
+
+jar {
+    from('LICENSE') {
+        rename { "${it}_${archivesBaseName}" }
+    }
+
+    manifest.attributes([
+          "MixinConfigs": "createsandpapers.mixins.json",
+    ])
+}
 
 
 publishing {
@@ -174,8 +192,4 @@ publishing {
             url "file://${project.projectDir}/mcmodsrepo"
         }
     }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }

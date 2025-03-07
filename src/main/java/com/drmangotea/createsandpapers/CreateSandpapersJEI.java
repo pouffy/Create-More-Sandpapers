@@ -28,7 +28,7 @@ public class CreateSandpapersJEI implements IModPlugin {
     }
     
     private void registerPolishingCatalyst(IRecipeCatalystRegistration registration, Item item) {
-        registration.getJeiHelpers().getRecipeType(spPolishing).ifPresent(type -> registration.addRecipeCatalyst(new ItemStack(item), type));
+        registration.getJeiHelpers().getRecipeType(spPolishing, SandPaperPolishingRecipe.class).ifPresent(type -> registration.addRecipeCatalyst(new ItemStack(item), type));
     }
 
     @Nonnull

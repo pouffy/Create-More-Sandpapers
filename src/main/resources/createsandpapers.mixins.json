@@ -1,15 +1,17 @@
-
 {
   "required": true,
-  "minVersion": 0.8,
+  "priority": 1100,
   "package": "com.drmangotea.createsandpapers.mixins",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_17",
   "refmap": "createsandpapers.refmap.json",
   "mixins": [
-   // "PolishingCategoryMixin"
-  ],
 
+  ],
+  "client": [
+
+  ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "minVersion": "0.8"
 }
