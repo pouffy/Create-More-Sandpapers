@@ -114,7 +114,7 @@ repositories {
 }
 
 dependencies {
-    modCompileOnly("com.tterrag.registrate:Registrate:${registrate_version}")
+    modImplementation("com.tterrag.registrate:Registrate:${registrate_version}")
 
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}"))
 

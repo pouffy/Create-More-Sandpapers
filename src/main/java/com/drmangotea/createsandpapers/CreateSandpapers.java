@@ -2,6 +2,7 @@ package com.drmangotea.createsandpapers;
 
 import com.drmangotea.createsandpapers.data.CSDatagen;
 
+import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipHelper;
