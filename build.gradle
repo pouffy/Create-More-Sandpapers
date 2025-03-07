@@ -24,8 +24,8 @@ base {
 
 def refmap
 mixin {
-    refmap = add sourceSets.main, 'createsandpapers.refmap.json'
-    config 'createsandpapers.mixins.json'
+    //refmap = add sourceSets.main, 'createsandpapers.refmap.json'
+    //config 'createsandpapers.mixins.json'
 }
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
@@ -67,7 +67,7 @@ legacyForge {
             systemProperty 'mixin.debug.export', 'true'
             systemProperty 'mixin.debug.verbose', 'true'
 
-            programArgument '-mixin.config=createsandpapers.mixins.json'
+            //programArgument '-mixin.config=createsandpapers.mixins.json'
         }
 
         client {
@@ -149,9 +149,9 @@ dependencies {
 
 
 sourceSets.main {
-    java {
+    //java {
 
-    }
+    //}
 
     resources {
         srcDir 'src/generated/resources'
@@ -182,19 +182,18 @@ jar {
     from('LICENSE') {
         rename { "${it}_${archivesBaseName}" }
     }
-
-    manifest.attributes([
-          "MixinConfigs": "createsandpapers.mixins.json",
-    ])
+    //manifest.attributes([
+    //      "MixinConfigs": "createsandpapers.mixins.json",
+    //])
 }
 
 final slimJar = tasks.register("slimJar", Jar) {
     archiveClassifier = "slim"
     from(sourceSets.main.output)
-    from(refmap)
-    manifest.attributes([
-            "MixinConfigs": "createsandpapers.mixins.json",
-    ])
+    //from(refmap)
+    //manifest.attributes([
+    //        "MixinConfigs": "createsandpapers.mixins.json",
+    //])
 }
 obfuscation.reobfuscate(slimJar, sourceSets.main)
 
