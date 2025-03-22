@@ -3,7 +3,6 @@ package com.drmangotea.createsandpapers.data;
 import com.drmangotea.createsandpapers.CSRegistrate;
 import com.drmangotea.createsandpapers.CreateSandpapers;
 import com.drmangotea.createsandpapers.ModSandpapers;
-import com.simibubi.create.Create;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateDataProvider;
 import com.tterrag.registrate.providers.RegistrateRecipeProvider;
@@ -15,13 +14,11 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.world.item.Items;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class CSDatagen {
     public static void gatherData(GatherDataEvent event) {

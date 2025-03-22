@@ -2,6 +2,7 @@ package com.drmangotea.createsandpapers;
 
 import com.simibubi.create.content.equipment.sandPaper.SandPaperItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
+import net.minecraft.world.entity.projectile.windcharge.WindCharge;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -32,7 +33,7 @@ public enum ModSandpapers {
     ;
 
     public final ItemEntry<SandPaperItem> SAND_PAPER;
-    
+
     ModSandpapers() {
         CSRegistrate reg = CreateSandpapers.REGISTRATE.setCreativeTab(CSCreativeTab.BASE_CREATIVE_TAB);
         SAND_PAPER = reg.sandPaperItem(name().toLowerCase());
