@@ -1,18 +1,13 @@
 package com.drmangotea.createsandpapers;
 
-import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.equipment.sandPaper.SandPaperItem;
-import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.TooltipModifier;
-import com.simibubi.create.foundation.mixin.accessor.AbstractRegistrateAccessor;
-import com.simibubi.create.impl.registrate.CreateRegistrateRegistrationCallbackImpl;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.Builder;
 import com.tterrag.registrate.builders.ItemBuilder;
-import com.tterrag.registrate.providers.RegistrateDataProvider;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
@@ -26,13 +21,10 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class CSRegistrate extends AbstractRegistrate<CSRegistrate> {
@@ -93,15 +85,6 @@ public class CSRegistrate extends AbstractRegistrate<CSRegistrate> {
         if (currentTab != null)
             TAB_LOOKUP.put(entry, currentTab);
 
-        for (CreateRegistrateRegistrationCallbackImpl.CallbackImpl<?> callback : CreateRegistrateRegistrationCallbackImpl.CALLBACKS_VIEW) {
-            String modId = callback.id().getNamespace();
-            String entryId = callback.id().getPath();
-            if (callback.registry().equals(type) && getModid().equals(modId) && name.equals(entryId)) {
-                //noinspection unchecked
-                ((Consumer<T>) callback.callback()).accept(entry.get());
-            }
-        }
-
         return entry;
     }
     
@@ -134,11 +117,5 @@ public class CSRegistrate extends AbstractRegistrate<CSRegistrate> {
     }
     public static TagKey<Item> makesSandpaper(String name) {
         return modItemTag("createsandpapers", "creates_" + name + "_sandpaper");
-    }
-
-    @ApiStatus.Internal
-    public RegistrateDataProvider setDataProvider(RegistrateDataProvider provider) {
-        ((AbstractRegistrateAccessor) this).create$setProvider(provider);
-        return provider;
     }
 }

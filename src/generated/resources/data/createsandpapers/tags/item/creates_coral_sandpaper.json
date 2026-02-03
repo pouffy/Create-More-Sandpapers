@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "tropicraft:coral_sand",
+      "required": false
+    },
+    {
+      "id": "#c:sands/coral",
+      "required": false
+    }
+  ]
+}

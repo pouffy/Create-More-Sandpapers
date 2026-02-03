@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "atmospheric:arid_sand",
+      "required": false
+    },
+    {
+      "id": "#c:sands/arid",
+      "required": false
+    }
+  ]
+}

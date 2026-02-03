@@ -7,12 +7,12 @@ java.withJavadocJar()
 jar {
     manifest {
         attributes([
-                'Specification-Title'     : "Create: More Sandpapers",
-                'Specification-Vendor'    : "DrMangoTea",
+                'Specification-Title'     : mod_name,
+                'Specification-Vendor'    : mod_author,
                 'Specification-Version'   : project.jar.archiveVersion,
                 'Implementation-Title'    : project.name,
                 'Implementation-Version'  : project.jar.archiveVersion,
-                'Implementation-Vendor'   : "DrMangoTea",
+                'Implementation-Vendor'   : mod_author,
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 'Timestampe'              : System.currentTimeMillis(),
                 'Built-On-Java'           : "${System.getProperty('java.vm.version')} (${System.getProperty('java.vm.vendor')})",

@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "byg:quartzite_sand",
+      "required": false
+    },
+    {
+      "id": "#c:sands/quartzite",
+      "required": false
+    }
+  ]
+}

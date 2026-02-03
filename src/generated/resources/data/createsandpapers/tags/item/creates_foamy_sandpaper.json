@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "tropicraft:foamy_sand",
+      "required": false
+    },
+    {
+      "id": "#c:sands/foamy",
+      "required": false
+    }
+  ]
+}

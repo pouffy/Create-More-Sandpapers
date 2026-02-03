@@ -1,25 +1,27 @@
 plugins {
-    id "idea"
-    id "eclipse"
-    id "maven-publish"
-    id "net.neoforged.moddev" version "2.0.74"
-    id "dev.ithundxr.silk" version "0.11.15"
-    id "net.kyori.blossom" version "2.1.0" // https://github.com/KyoriPowered/blossom
-    id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.8" // https://github.com/JetBrains/gradle-idea-ext-plugin
+    id("idea")
+    id("eclipse")
+    id("maven-publish")
+    id("net.kyori.blossom") version "2.1.0" // https://github.com/KyoriPowered/blossom
+    id("dev.ithundxr.silk") version "1.0.1" // https://github.com/ithundxr/silk
+    id("net.neoforged.moddev") version "2.0.107" // https://projects.neoforged.net/neoforged/ModDevGradle
+    id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.8" // https://github.com/JetBrains/gradle-idea-ext-plugin
 }
 
-apply from: "./gradle/java.gradle"
-apply from: "gradle/property_loader.gradle"
+apply(from: "./gradle/java.gradle")
+apply(from: "./gradle/property_loader.gradle")
 
-archivesBaseName = 'createsandpapers'
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.BIN
+}
 
 base {
-    archivesName = "createsandpapers-${artifact_minecraft_version}"
+    archivesName = mod_id
     group = 'com.drmangotea.createsandpapers'
     version = mod_version + '-' + minecraft_version
 }
 
-println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+println("Java: ${System.getProperty("java.version")}, JVM: ${System.getProperty("java.vm.version")} (${System.getProperty("java.vendor")}), Arch: ${System.getProperty("os.arch")}")
 
 idea {
     module {
@@ -29,11 +31,11 @@ idea {
 }
 
 neoForge {
-    version = project.neo_version
+    version = neo_version
 
     parchment {
-        minecraftVersion = minecraft_version
-        mappingsVersion = parchment_version
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
     }
 
     mods {
@@ -44,42 +46,45 @@ neoForge {
 
     runs {
         configureEach {
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
-            jvmArguments = ["-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition"]
-            //jvmArgs("-XX:-OmitStackTraceInFastThrow") // uncomment when you get exceptions with null messages etc
-            //jvmArgs '-XX:+UnlockCommercialFeatures' // uncomment for profiling
+            systemProperty("forge.logging.markers", "REGISTRIES")
+            jvmArgument("-XX:+IgnoreUnrecognizedVMOptions")
+            jvmArgument("-XX:+AllowEnhancedClassRedefinition")
+            //jvmArgument("-XX:-OmitStackTraceInFastThrow") // uncomment when you get exceptions with null messages etc
+            //jvmArgument("-XX:+UnlockCommercialFeatures") // uncomment for profiling
 
-            systemProperty 'mixin.debug.verbose', 'true'
-            systemProperty 'mixin.debug.export', 'true'
+            systemProperty("mixin.debug.verbose", "true")
+            systemProperty("mixin.debug.export", "true")
 
-            logLevel = org.slf4j.event.Level.DEBUG
+            systemProperty("neoforge.enabledGameTestNamespaces", mod_id as String)
+
+            loggingConfigFile = project.file("log4j.xml")
         }
 
         client {
             client()
-
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         server {
             server()
 
-            gameDirectory = project.file('run/server')
+            gameDirectory = project.file("run/server")
 
-            programArgument '--nogui'
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-        }
-
-        gameTestServer {
-            type = "gameTestServer"
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            programArgument("--nogui")
         }
 
         data {
             data()
 
-            programArguments.addAll('--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath())
+            programArguments.addAll(
+                    "--mod", mod_id as String,
+                    "--all",
+                    "--output", file("src/generated/resources/").getAbsolutePath(),
+                    "--existing", file("src/main/resources/").getAbsolutePath()
+            )
+        }
+
+        gameTestServer {
+            type = "gameTestServer"
         }
     }
 }
@@ -104,82 +109,37 @@ repositories {
 }
 
 dependencies {
-    jarJar(implementation("com.tterrag.registrate:Registrate:${registrate_version}"))
-    jarJar("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
-
+    implementation "net.neoforged:neoforge:${neo_version}"
     implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
-    compileOnlyApi("dev.engine-room.flywheel:flywheel-neoforge-api-${flywheel_minecraft_version}:${flywheel_version}")
-    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${flywheel_minecraft_version}:${flywheel_version}")
     implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
 
-    compileOnlyApi("mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version")
-    compileOnlyApi("mezz.jei:jei-$jei_minecraft_version-neoforge-api:$jei_version")
-    implementation("mezz.jei:jei-$jei_minecraft_version-neoforge:$jei_version")
-
-    //modImplementation("curse.maven:oh-the-biomes-youll-go-247560:3920704") // oh the biomes youl'll go
-    //modImplementation("maven.modrinth:biomes-o-plenty:$bop_ver") // biomes o plenty
-
-    //modRuntimeOnly("maven.modrinth:corgilib-693313:4416616") // corgilib
-    //modRuntimeOnly("maven.modrinth:terrablender:$terrabl_ver") // terrablender
-    //modRuntimeOnly("maven.modrinth:glitchcore:$glitchcore_ver") // glitch core
-
-
-
-    implementation 'org.jetbrains:annotations:22.0.0'
-
-    if (!Boolean.getBoolean('idea.sync.active')) {
-        annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
-    }
+    implementation("mezz.jei:jei-${jei_minecraft_version}-neoforge:${jei_version}")
+    implementation("com.tterrag.registrate:Registrate:${registrate_version}")
 }
 
-
-
 sourceSets.main {
-    //java {
-
-    //}
-
     resources {
-        srcDir 'src/generated/resources'
-        exclude '.cache/'
+        srcDir("src/generated/resources")
+        exclude(".cache/")
     }
 
     blossom.javaSources {
-        property("version", build_info_mod_version)
+        property("version", mod_version)
     }
-}
-
-processResources {
-    def buildProps = project.properties.clone()
-
-    // Replaces FML's magic file.jarVersion string with the correct version at build time.
-    buildProps.put('file', [jarVersion: project.version])
-
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
-        expand buildProps
-    }
-}
-
-compileJava {
-    options.compilerArgs = ['-Xdiags:verbose']
 }
 
 jar {
-    from('LICENSE') {
-        rename { "${it}_${archivesBaseName}" }
+    String name = base.archivesName.get()
+
+    from("LICENSE") {
+        rename { "${it}_$name" }
     }
-    //manifest.attributes([
-    //      "MixinConfigs": "createsandpapers.mixins.json",
-    //])
 }
 
 final slimJar = tasks.register("slimJar", Jar) {
-    archiveClassifier = "slim"
     from(sourceSets.main.output)
-    //from(refmap)
-    //manifest.attributes([
-    //        "MixinConfigs": "createsandpapers.mixins.json",
-    //])
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
@@ -193,10 +153,10 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             minecraft_version_range: minecraft_version_range,
             neo_version_range      : neo_version_range
     ]
-    inputs.properties replaceProperties
-    expand replaceProperties
-    from "src/main/templates"
-    into "build/generated/sources/modMetadata"
+    inputs.properties(replaceProperties)
+    expand(replaceProperties)
+    from("src/main/templates")
+    into("build/generated/sources/modMetadata")
 }
 
 // Include the output of "generateModMetadata" as an input directory for the build

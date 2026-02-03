@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "biomesoplenty:orange_sand",
+      "required": false
+    },
+    {
+      "id": "#c:sands/orange",
+      "required": false
+    }
+  ]
+}

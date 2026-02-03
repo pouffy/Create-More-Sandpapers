@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "ad_astra:venus_sand",
+      "required": false
+    },
+    {
+      "id": "#c:sands/venus",
+      "required": false
+    }
+  ]
+}

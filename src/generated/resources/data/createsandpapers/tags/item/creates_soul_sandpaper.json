@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "minecraft:soul_sand",
+      "required": false
+    },
+    {
+      "id": "#c:sands/soul",
+      "required": false
+    }
+  ]
+}

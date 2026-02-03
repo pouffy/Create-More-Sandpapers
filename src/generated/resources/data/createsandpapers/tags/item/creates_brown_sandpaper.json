@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "tfc:sand/brown",
+      "required": false
+    },
+    {
+      "id": "#c:sands/brown",
+      "required": false
+    }
+  ]
+}

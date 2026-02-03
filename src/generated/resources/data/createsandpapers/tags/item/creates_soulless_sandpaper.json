@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "forbidden_arcanus:soulless_sand",
+      "required": false
+    },
+    {
+      "id": "#c:sands/soulless",
+      "required": false
+    }
+  ]
+}

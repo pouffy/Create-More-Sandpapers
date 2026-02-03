@@ -6,24 +6,19 @@ import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
+import com.simibubi.create.infrastructure.data.CreateDatagen;
 import net.createmod.catnip.lang.FontHelper;
-import net.minecraft.core.registries.Registries;
+import net.createmod.catnip.lang.Lang;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.server.commands.SayCommand;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
 
-
-import java.util.Arrays;
 
 import static com.simibubi.create.foundation.item.TooltipHelper.styleFromColor;
 
@@ -34,6 +29,7 @@ public class CreateSandpapers
     public static final CSRegistrate REGISTRATE = CSRegistrate.create();
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final FontHelper.Palette CS_PALETTE = new FontHelper.Palette(styleFromColor(0xd8b395), styleFromColor(0xe8dec8));
+
     static {
         REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, CS_PALETTE)
                 .andThen(TooltipModifier.mapNull(KineticStats.create(item))));
@@ -45,6 +41,7 @@ public class CreateSandpapers
         ModSandpapers.register();
         CSCreativeTab.register(eventBus);
 
+        eventBus.addListener(EventPriority.HIGHEST, CSDatagen::gatherDataHighPriority);
         eventBus.addListener(EventPriority.LOWEST, CSDatagen::gatherData);
     }
     

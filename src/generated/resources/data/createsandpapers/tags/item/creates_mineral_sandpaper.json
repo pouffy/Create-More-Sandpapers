@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "tropicraft:mineral_sand",
+      "required": false
+    },
+    {
+      "id": "#c:sands/mineral",
+      "required": false
+    }
+  ]
+}

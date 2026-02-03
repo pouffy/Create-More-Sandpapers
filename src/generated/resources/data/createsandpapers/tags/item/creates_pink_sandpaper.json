@@ -1,0 +1,20 @@
+{
+  "values": [
+    {
+      "id": "tfc:sand/pink",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:pink_sand",
+      "required": false
+    },
+    {
+      "id": "natures_spirit:pink_sand",
+      "required": false
+    },
+    {
+      "id": "#c:sands/pink",
+      "required": false
+    }
+  ]
+}
